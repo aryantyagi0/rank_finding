@@ -2,116 +2,109 @@ SEO Ranking Agent (Google Search & Maps)
 
 This project is an agentic SEO automation system that checks Google Search and Maps rankings for a list of keywords and writes structured insights back into the same Excel file.
 
-It combines deterministic data collection, rule-based decision making, and LLM-powered reasoning, while keeping a human-in-the-loop for verification.
+It combines deterministic data collection, rule-based decision making, and controlled LLM reasoning while keeping a human-in-the-loop for verification.
 
-What This Project Does
+What the Project Does
 
-Reads keywords and target pages from an Excel sheet
+Reads keywords and target pages from an Excel file
 
-Checks:
+Fetches Google organic search rankings (top 50 results)
 
-Google organic search rankings (top 50)
+Fetches Google Maps rankings (top 20 results)
 
-Google Maps rankings (top 20)
+Generates factual, neutral explanations using an LLM
 
-Generates neutral, factual explanations using an LLM
-
-Automatically opens Google Search and/or Maps for manual verification when required
+Opens Google Search or Maps for manual verification when needed
 
 Writes all results back into the same Excel file
 
-Supports resume-safe execution (already processed rows are skipped)
+Skips already processed rows for safe re-runs
 
 Why This Is Agentic AI
 
-This system goes beyond basic automation and behaves like an agent:
+This system behaves like an agent rather than a simple script.
 
-It operates in clearly defined steps
+It works in clearly defined steps
 
 Each step has a single responsibility
 
 Decisions are made based on state and rules
 
-Human verification is triggered only when needed
+Human verification is triggered conditionally
 
-Example behavior:
+Examples:
 
-If organic rank is within the top 10, Google Search is opened
+If organic rank is in the top 10, Google Search is opened
 
-If Maps rank is within the top 5, Google Maps is opened
+If Maps rank is in the top 5, Google Maps is opened
 
 If neither condition is met, no browsing occurs
 
-Explanations are generated strictly from collected data
+The LLM never invents data or recommendations
 
 Architecture (Simple Explanation)
 
-The architecture is divided into clear layers:
+The architecture is divided into logical layers:
 
 Input Layer
 Reads keywords from Excel while preserving formatting.
 
 Data Collection Layer
-Fetches Google Search and Google Maps rankings using SerpAPI.
+Fetches Google Search and Maps rankings using SerpAPI.
 
 Agent Orchestration Layer
-Uses a state-based agent graph where each node performs a single task:
+Uses a state-based graph where each node performs one task:
 
-Organic ranking
+Organic ranking check
 
-Maps ranking
+Maps ranking check
 
-Reasoning
+Reasoning generation
 
 Reasoning Layer (LLM)
-Converts numeric results into neutral explanations under strict constraints.
+Converts numeric results into neutral explanations under strict rules.
 
 Decision Layer
-Determines whether human verification is required and conditionally opens Google Search or Maps.
+Decides whether Google Search or Maps should be opened for verification.
 
 Persistence Layer
-Writes results back into the same Excel file and allows safe resumption on future runs.
+Writes results back into the same Excel file and supports resume-safe runs.
 
-Technologies and Libraries Used
-Tool / Library	Purpose
-pandas	Reading and processing Excel data
-openpyxl	Writing results back into Excel while preserving formatting
-requests	Making API calls
-SerpAPI	Fetching Google Search and Maps results
-LangChain	Integrating the LLM
-LangGraph	Orchestrating agent state and execution flow
-OpenAI API	Generating factual, constrained explanations
-webbrowser / subprocess	Opening Google Search and Maps for verification
-python-dotenv	Secure environment variable management
-Why the Code Is in a Single File
+Libraries and Tools Used
 
-This is a deliberate design choice:
+pandas – reading and processing Excel data
 
-The script is audit-heavy and manually reviewed
+openpyxl – writing results back while preserving Excel formatting
 
-Keeping logic in one file simplifies debugging and verification
+requests – API communication
 
-Logical separation exists through functions and agent nodes
+SerpAPI – Google Search and Google Maps data
 
-The code can be modularized later without changing core logic
+LangChain – LLM integration
 
-This prioritizes clarity and control over premature abstraction.
+LangGraph – state-based agent orchestration
+
+OpenAI API – controlled reasoning generation
+
+webbrowser / subprocess – browser automation for verification
+
+python-dotenv – environment variable management
 
 Human-in-the-Loop Design
 
 The system does not blindly automate actions.
 
-Browsing is triggered only for important results
+Browsing happens only for important keywords
 
 Google Search opens before Google Maps
 
-Incognito or InPrivate mode is supported for Chrome and Edge
+Incognito/InPrivate mode is supported for Chrome and Edge
 
-A graceful fallback is used if incognito is unavailable
+Graceful fallback to normal browser if incognito is unavailable
 
-This ensures transparency and trust in the output.
+This keeps the process transparent and verifiable.
 
-Excel Output
+Excel Output Behavior
 
 The same input file is updated with:
 
@@ -121,19 +114,33 @@ Google Maps rank
 
 Agent-generated explanation
 
-Automatically adjusted row height for readability
+Automatically adjusted row height for long text
 
-Previously processed rows are skipped on subsequent runs.
+Previously processed rows are skipped on future runs.
+
+Why the Code Is in a Single File
+
+The code is intentionally kept in one file:
+
+Easier auditing and debugging
+
+Clear visibility of agent flow
+
+Logical separation is handled via functions and agent nodes
+
+Can be modularized later without changing behavior
+
+This prioritizes clarity over premature abstraction.
 
 Safety and Reliability
 
-No trend assumptions or speculative insights
+No speculative insights or trends
 
 No hallucinated explanations
 
 No destructive Excel operations
 
-API throttling safeguards included
+API throttling protection included
 
 Resume-safe execution
 
@@ -153,20 +160,3 @@ OPENAI_API_KEY=your_openai_key
 Run the script:
 
 python main.py
-
-Final Notes
-
-This project demonstrates:
-
-Agentic system design
-
-Responsible use of large language models
-
-Rule-based decision making
-
-Human-in-the-loop verification
-
-Practical SEO automation
-
-It is designed for clarity, control, and trust rather than blind automation.
-
