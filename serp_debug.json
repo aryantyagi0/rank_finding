@@ -1,0 +1,44 @@
+{
+  "search_metadata": {
+    "id": "6954f8543ee4c29fa3a24ea9",
+    "status": "Success",
+    "json_endpoint": "https://serpapi.com/searches/f5c96efab723d812/6954f8543ee4c29fa3a24ea9.json",
+    "pixel_position_endpoint": "https://serpapi.com/searches/f5c96efab723d812/6954f8543ee4c29fa3a24ea9.json_with_pixel_position",
+    "created_at": "2025-12-31 10:17:56 UTC",
+    "processed_at": "2025-12-31 10:17:56 UTC",
+    "google_url": "https://www.google.co.in/search?q=corporate+food+catering+noida&oq=corporate+food+catering+noida&uule=w+CAIQICIZTm9pZGEsVXR0YXIgUHJhZGVzaCxJbmRpYQ&hl=en&gl=in&num=50&sourceid=chrome&ie=UTF-8",
+    "raw_html_file": "https://serpapi.com/searches/f5c96efab723d812/6954f8543ee4c29fa3a24ea9.html",
+    "total_time_taken": 9.2
+  },
+  "search_parameters": {
+    "engine": "google",
+    "q": "corporate food catering noida",
+    "location_requested": "Noida, Uttar Pradesh, India",
+    "location_used": "Noida,Uttar Pradesh,India",
+    "google_domain": "google.co.in",
+    "hl": "en",
+    "gl": "in",
+    "num": "50",
+    "device": "desktop"
+  },
+  "search_information": {
+    "query_displayed": "corporate food catering noida",
+    "total_results": 16800000,
+    "time_taken_displayed": 0.37,
+    "organic_results_state": "Results for exact spelling"
+  },
+  "local_map": {
+    "image": "https://www.google.com/maps/vt/data=D_ASb3yxOBHqJavFd2bB6fU0-pEEdPc1QBifcwfZA0imp14Un6u6kSXR9odfuHxZZIKKstwlyT0llk266OVUInCYOBKCmdgaeaM0qhTaFeoYma7iey1x2LUJd9pVAa5z6kYxLliBtoszT0iRx4YG393e8I5vlds9ghJk5StCU_IL3T8zITc49cMr11JCv4RMaP3OcB9RKeQDQhw1e75V9rTFVp0PUg2Y2sNQcg8MXc7xuRKkCgTVIgLqMAKkwgjwqWGj2cKZ-njCijw70iVxIOI36KRindQ_fkJDc1TPPc-Jb22w9ReOmBt-WTygogLw8CZpFRvj-JsObzAxuhcrMZcZ5RRbAIphCYEtfp8t0INZaGn3HJ89vtyj-AC8JR9I7zGb7o7gQQXvC5VXTkoloE5bY88t8UEXZQKzw8lliSeJa3LEOmdukM1eUb7bbPmJHwN8LJQpCggoF0kTVNsC_UjHF7B8u5iJCPtrgxGJ4Apy49rtj9um1c7JqZnSrFpOriOM9FlH9lxsNymRiCT5JdxDc_UOEHhxtsRfxS20VlbwBIthAhCzxs4MZmsQanwbrBZqb2Ca0aEJJSEHLG_EtGHyEcNTd-zGfBxxGfOKitnHC7PSPTyQYEuBbx6AlfX7Cbnc3ZPoW3Ki0wZvjjg2lFgtmghZn3nsw3hiurpOFCWu_ncYKyWggAy-WyWrFsH0ID7T4IZ4GSFVdWBjNNXgNaKu22fxb-CBvznEnSnCN5NAibX6FqwICF01AK4ItxskudqCOJVH4mFGqLax2a2kKSqG8q8Zwg3GNDUR4B0cI7s-CuzVvQclXwuLvFDjKaseY03BiJf31k9HUrHHpN1p1ZXgFM8ZhXmAq4T34BDs0EdjwK5gb5BXOpXu2kUfpQmYGW8Zighqd_afmCNJY_rsMkF-REkzfOW4hdbihKfxb7wz7Qbq9u03lKUKo6HO3205n2Drfsg2TVllLaAmv5SUdqEQHIQj-yrkmWM5d-0XNQYtrdUnWT6Mw1NZEEnlMA1hflsjM6e7gHPlEKMPWAVNSNWgpA6cugb4FJ-mGM-ILKTDSQycNh6BSoQqclmotmh2HyrDvWSghuGBgHLYtykxxOU7woebLTe4WgjZB-LizmBkzw6O1c6oWNtpaEutBkpyfC_Hbo6Ft3ATeyVydAK75cWL2vMjTc6yh9X7bL7YarYaglsWjSHyoEWgWx73rRY0eGyb0tfxtondSjibuOuwpvfYsNXYLDbwOrVCsjrilqrniq3QwBWzDUbuLLaZdgegH4BKKgtIYbYvV1StkIlTtV9J9RsCxt_qqlCR7lpbajA-rI8CQcST5UA0cV7m87kAiAQlBnZbbtj60k3sd151BNXW_9nigeAuyUT9tPCy9yFnesbOb_k8hhSnSWhZb8mZbuvS",
+    "gps_coordinates": {
+      "latitude": 28.54049703,
+      "longitude": 77.45121002
+    }
+  },
+  "local_results": {
+    "places": [
+      {
+        "position": 1,
+        "rating": 4.8,
+        "reviews": 2100,
+        "reviews_original": "(2.1K)",
+        "price": 
