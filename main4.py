@@ -4,15 +4,19 @@ import time
 import os
 import re
 from urllib.parse import urlparse, parse_qs, unquote
+# Extracts real URLs from Google redirect links()
 from typing import TypedDict, Optional
 from dotenv import load_dotenv
 from openpyxl import load_workbook
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END
 import webbrowser
+# Opens Google Search or Maps automatically
 from urllib.parse import quote
 import subprocess
-import shutil
+# Opens Chrome or Edge in Incognito mode
+import shutil 
+# Detects if Chrome or Edge exists on system
 import sys
 
 
@@ -35,7 +39,7 @@ SHEET_NAME = "Keywords"
 LOCATION = "Noida, Uttar Pradesh, India"
 MAPS_LL = "@28.5355,77.3910,14z"
 RATE_LIMIT_DELAY = 2
-OPEN_BROWSER = True   # set False for headless / automation runs
+OPEN_BROWSER = False   # set False for headless / automation runs
 USE_INCOGNITO = False     # turn off if needed
 BROWSER_DELAY = 2       # seconds between browser actions
 
@@ -191,39 +195,67 @@ def get_organic_rank(keyword, domain):
         time.sleep(RATE_LIMIT_DELAY)
 
     return (str(best_rank), best_url) if best_rank else ("Not Found", "")
+def get_pack_rank(keyword: str, domain: str, business_name: str) -> Optional[str]:
+    """
+    Hybrid Local Pack Rank:
+    1) Google Maps
+    2) Fallback to Local Finder (tbm=lcl)
+    """
 
-
-def get_maps_rank(keyword, domain, business_name):
-    params = {
+    # ---------- 1️⃣ GOOGLE MAPS ----------
+    params_maps = {
         "engine": "google_maps",
         "q": keyword,
         "ll": MAPS_LL,
         "api_key": SERP_API_KEY
     }
 
-    data = safe_serp_request(params)
-    norm_business = normalize_name(business_name)
-    norm_keyword = normalize_name(keyword)
+    data = safe_serp_request(params_maps)
+    places = data.get("local_results", [])
 
-    for idx, place in enumerate(data.get("local_results", [])[:20], start=1):
+    norm_business = normalize_name(business_name)
+
+    for idx, place in enumerate(places, start=1):
         website = place.get("website", "")
         title = place.get("title", "")
 
-        # 1️ Best match: website domain
         if website and domain_matches(website, domain):
             return str(idx)
 
-        # 2️ Fallback: business name + keyword relevance
-        norm_title = normalize_name(title)
-        if (
-            norm_business
-            and norm_business in norm_title
-            and any(word in norm_title for word in norm_keyword.split())
-        ):
+        if norm_business and norm_business in normalize_name(title):
             return str(idx)
 
-    #  ONLY here if nothing matched
-    return "Not in top 20"
+    # ---------- 2️⃣ LOCAL FINDER FALLBACK ----------
+    params_lcl = {
+        "engine": "google",
+        "q": keyword,
+        "tbm": "lcl",
+        "location": LOCATION,
+        "hl": "en",
+        "gl": "in",
+        "api_key": SERP_API_KEY
+    }
+
+    data = safe_serp_request(params_lcl)
+    places = data.get("local_results", [])
+
+    for idx, place in enumerate(places, start=1):
+        website = place.get("website", "")
+        title = place.get("title", "")
+
+        if website and domain_matches(website, domain):
+            return str(idx)
+
+        if norm_business and norm_business in normalize_name(title):
+            return str(idx)
+
+    return "Not in pack"
+
+
+
+
+
+
 
 
 
@@ -287,9 +319,10 @@ class RankState(TypedDict):
     domain: str
     organic_rank: Optional[str]
     organic_url: Optional[str]
-    maps_rank: Optional[str]
+    maps_rank: Optional[str]   # ← this is NOW pack_rank
     reasoning: Optional[str]
     business_name: str
+
 
 # =============================
 # AGENT NODES
@@ -301,8 +334,13 @@ def organic_node(state: RankState):
     return state
 
 def maps_node(state: RankState):
-    state["maps_rank"] = get_maps_rank(state["keyword"], state["domain"],state["business_name"])
+    state["maps_rank"] = get_pack_rank(
+        state["keyword"],
+        state["domain"],
+        state["business_name"]
+    )
     return state
+
 
 def reasoning_node(state: RankState):
     prompt = f"""
@@ -320,8 +358,9 @@ STRICT RULES (must follow):
 
 DATA:
 Keyword: {state['keyword']}
-Organic Rank (Top 50 check): {state['organic_rank']}
-Maps Rank (Top 20 check): {state['maps_rank']}
+Organic Rank (Google Search): {state['organic_rank']}
+Local Pack Rank (Maps → Local Finder): {state['maps_rank']}
+
 
 TASK:
 Write 2–3 sentences explaining what these results indicate.
@@ -425,6 +464,7 @@ def main():
             "keyword": keyword,
             "domain": row["Domain"],
             "organic_rank": None,
+            "business_name": "OMKITCHEN",
             "organic_url": None,
             "maps_rank": None,
             "reasoning": None
