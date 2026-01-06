@@ -1,235 +1,238 @@
-SEO Ranking Agent (Google Search & Maps)
-Overview
+🤖 SEO Ranking Agent (Google Search & Local Pack)
+📌 Overview
 
-This project is an agentic SEO automation system that checks Google Search and Google Maps / Local rankings for a list of keywords and writes structured, factual insights back into the same Excel file.
+This project is an agentic SEO automation system that checks Google Search (organic) and Local Pack rankings for a list of keywords and writes structured, factual insights back into the same Excel file.
 
-It combines:
+The system combines:
 
-Deterministic data collection
+📊 Deterministic data collection
 
-Rule-based decision making
+🧠 Rule-based decision making
 
-Controlled LLM reasoning
+🔁 State-based orchestration
 
-Human-in-the-loop verification
+✍️ Controlled LLM reasoning
 
-The system is designed to be transparent, resume-safe, and non-speculative.
+👤 Human-in-the-loop verification
 
-What the Project Does
+The focus is accuracy, transparency, and explainability, not blind automation.
 
-Reads keywords and target pages from an Excel file
+✨ Key Features
 
-Fetches Google organic search rankings (top 50 results)
+📥 Reads keywords and target pages from Excel
 
-Fetches Google local rankings (Local Pack + extended places up to top 20)
+🔍 Fetches Google organic rankings (top 50)
 
-Generates factual, neutral explanations using an LLM
+📍 Fetches Local Pack rankings (top 3 + Local Finder fallback up to top 20)
 
-Opens Google Search or Maps only when verification is needed
+🧾 Generates factual, neutral explanations using an LLM
 
-Writes all results back into the same Excel file
+📝 Writes results back into the same Excel file
 
-Skips already processed rows for safe re-runs
+🔁 Skips already processed rows (resume-safe execution)
 
-Why This Is Agentic AI
+🌐 Opens Google Search or Maps for manual verification (optional)
+
+📐 Preserves Excel formatting with dynamic row height adjustment
+
+🧠 Why This Is Agentic AI
 
 This system behaves like an agent, not a simple script.
 
-Key agent characteristics:
+✅ Agent Characteristics
 
-Clear step-by-step execution
+Step-by-step execution using a state graph
 
 Each step has a single responsibility
 
-Decisions are made based on state and rules
+Decisions are based on current state, not hardcoded logic
 
 Human verification is triggered conditionally
 
-The LLM is constrained and non-creative
+LLM usage is strictly constrained (no hallucinations)
 
-Example decision rules:
+📌 Example Decisions
 
-If organic rank ≤ 10 → Google Search may open
+If organic rank ≤ 10 → open Google Search
 
-If local rank ≤ 5 → Google Maps may open
+If Local Pack rank ≤ 5 → open Google Maps
 
-If neither condition is met → no browsing occurs
+If neither condition is met → no browsing
 
-The LLM never invents data, trends, or recommendations
+If data already exists → skip processing
 
-Architecture (Simple Explanation)
+🏗️ Architecture (Simple Explanation)
 
-The architecture is divided into logical layers:
+The system is divided into clear logical layers:
 
-1. Input Layer
+📥 1. Input Layer
 
-Reads keywords from Excel
+Reads keywords and target URLs from Excel
 
-Preserves formatting and structure
+Preserves existing formatting and structure
 
-2. Data Collection Layer
+📡 2. Data Collection Layer
 
-Fetches Google Search results using SerpAPI
+Google Search rankings via SerpAPI
 
-Fetches Local Pack and extended local places
+Local Pack data using:
 
-Uses strict matching rules (domain + business name)
+Google Maps engine
 
-3. Agent Orchestration Layer
+Local Finder fallback (tbm=lcl)
+
+🔁 3. Agent Orchestration Layer
 
 Implemented using a state-based graph
 
-Each node performs exactly one task:
+Nodes include:
 
 Organic ranking check
 
-Local ranking check
+Local Pack ranking check
 
 Explanation generation
 
-4. Reasoning Layer (LLM)
+✍️ 4. Reasoning Layer (LLM)
 
-Converts numeric results into neutral explanations
+Converts numeric rankings into neutral explanations
 
-Operates under strict rules:
+Strict rules prevent trends, assumptions, or recommendations
 
-No assumptions
+🧭 5. Decision Layer
 
-No trends
+Determines whether browser verification is required
 
-No recommendations
+Ensures human-in-the-loop validation
 
-No hallucinations
-
-5. Decision Layer
-
-Decides whether browsing is required
-
-Controls Search vs Maps priority
-
-Supports incognito / private browsing
-
-6. Persistence Layer
+💾 6. Persistence Layer
 
 Writes results back into the same Excel file
 
-Automatically adjusts row height
+Safe for re-runs and partial execution
 
-Skips completed rows on re-runs
+📍 Local Pack Ranking Logic
 
-Libraries and Tools Used
+Local Pack ranking uses a hybrid, realistic approach:
 
-pandas
-Reading and processing Excel data
+🗺️ Google Maps results (positions 1–3)
 
-openpyxl
-Writing results back while preserving Excel formatting
+📋 Local Finder fallback (positions 4–20)
 
-requests
-API communication
+Matching logic:
 
-SerpAPI
-Google Search, Local Pack, and Google Maps data
+🌐 Website domain match (strongest signal)
 
-LangChain
-Controlled LLM integration
+🏷️ Business name match (fallback)
 
-LangGraph
-State-based agent orchestration
+This mirrors how Google expands results when users click “More places”.
 
-OpenAI API
-Deterministic reasoning generation
+🧰 Libraries and Tools Used
 
-webbrowser / subprocess
-Browser automation for manual verification
+📊 pandas – reading and processing Excel data
 
-python-dotenv
-Environment variable management
+📘 openpyxl – writing results while preserving formatting
 
-Human-in-the-Loop Design
+🌐 requests – API communication
 
-The system does not blindly automate decisions.
+🔍 SerpAPI – Google Search, Maps, and Local Finder data
 
-Browsing happens only for important cases
+🔗 LangChain – LLM integration
+
+🧩 LangGraph – state-based agent orchestration
+
+🧠 OpenAI API – controlled reasoning generation
+
+🌍 webbrowser / subprocess – browser automation
+
+🔐 python-dotenv – environment variable management
+
+👤 Human-in-the-Loop Design
+
+Automation is selective, not blind.
+
+Browsing happens only for important rankings
 
 Google Search opens before Google Maps
 
-Incognito / InPrivate mode supported (Chrome & Edge)
+🕶️ Incognito / InPrivate mode supported
 
-Graceful fallback to normal browser if incognito is unavailable
+🔁 Graceful fallback to normal browser if needed
 
-This ensures auditability and trust.
+This ensures transparency and trust in results.
 
-Excel Output Behavior
+📄 Excel Output Behavior
 
-The same input file is updated with:
+The input Excel file is updated with:
 
-Google Search rank
+🔢 Organic rank
 
-Local (Pack + extended places) rank
+📍 Local Pack rank
 
-Agent-generated explanation
+🧾 Agent-generated explanation
 
-Additional behaviors:
+📐 Auto-adjusted row height for readability
 
-Row height auto-adjusts for long explanations
+Previously processed rows are skipped on future runs.
 
-Formatting is preserved
+📁 Why the Code Is in a Single File
 
-Previously processed rows are skipped safely
+The code is intentionally kept in one file to:
 
-Why the Code Is in a Single File
+🔍 Make auditing and debugging easier
 
-The code is intentionally kept in one file.
+🧠 Show the complete agent flow clearly
 
-Reasons:
+🧱 Avoid premature abstraction
 
-Easier auditing and debugging
+🎯 Keep interview discussions simple
 
-Clear visibility of the full agent flow
-
-No hidden execution paths
-
-Logical separation handled via functions and agent nodes
-
+Logical separation is handled via functions and agent nodes.
 The code can be modularized later without changing behavior.
-Clarity is prioritized over premature abstraction.
 
-Safety and Reliability
+🛡️ Safety and Reliability
 
-No speculative insights
+❌ No speculative insights
 
-No hallucinated explanations
+❌ No hallucinated explanations
 
-No destructive Excel operations
+❌ No destructive Excel operations
 
-API rate-limit protection included
+⏱️ API throttling protection included
 
-Resume-safe execution
+🔁 Resume-safe execution
 
-How to Run
-1. Install dependencies
+⚙️ Installation
+
+Install dependencies:
+
 pip install pandas openpyxl requests python-dotenv langchain langgraph
 
-2. Create a .env file
+🔐 Environment Setup
+
+Create a .env file in the project root:
+
 SERP_API_KEY=your_serpapi_key
 OPENAI_API_KEY=your_openai_key
 
-3. Run the script
+▶️ How to Run
 python main.py
 
-Summary
 
-This project demonstrates:
+The script updates the same Excel file with rankings and explanations.
 
-Practical agentic AI design
+🏁 Summary
 
-Deterministic + LLM hybrid architecture
+This project demonstrates how agentic AI can be applied to SEO analysis by combining:
 
-Human-in-the-loop automation
+📊 Deterministic data collection
 
-Production-safe Excel processing
+🔁 State-based orchestration
 
-Explainable and auditable SEO analysis
+🧠 Rule-driven decisions
 
-It is built for clarity, control, and correctness, not blind automation.
+✍️ Controlled LLM reasoning
+
+👤 Human verification
+
+It prioritizes accuracy, explainability, and safety over aggressive automation.
