@@ -29,7 +29,7 @@ SERP_API_KEY = os.getenv("SERP_API_KEY")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 if not SERP_API_KEY or not OPENAI_API_KEY:
-    raise ValueError("❌ Missing API keys")
+    raise ValueError(" Missing API keys")
 
 # =============================
 # CONFIG
@@ -151,10 +151,10 @@ def open_incognito(url):
             return
 
     except Exception as e:
-        print(f"⚠️ Incognito failed: {e}")
+        print(f" Incognito failed: {e}")
 
     # 3️ Graceful fallback
-    print("🌐 Fallback: opening in normal browser")
+    print(" Fallback: opening in normal browser")
     webbrowser.open_new_tab(url)
 
 # =============================
@@ -225,7 +225,7 @@ def get_pack_rank(keyword: str, domain: str, business_name: str) -> Optional[str
         if norm_business and norm_business in normalize_name(title):
             return str(idx)
 
-    # ---------- 2️⃣ LOCAL FINDER FALLBACK ----------
+    # ---------- 2️ LOCAL FINDER FALLBACK ----------
     params_lcl = {
         "engine": "google",
         "q": keyword,
@@ -455,7 +455,7 @@ def main():
             ws.cell(row=excel_row, column=GOOGLE_LINKS_COL).value
             and ws.cell(row=excel_row, column=AGENT_REASON_COL).value
         ):
-            print(f"⏭️ Skipping: {keyword}")
+            print(f" Skipping: {keyword}")
             continue
 
         print(f"🤖 Agent processing: {keyword}")
@@ -477,12 +477,12 @@ def main():
             maps_found = is_maps_found(state)
 
             if organic_found:
-                print("👀 Opening Google Search")
+                print(" Opening Google Search")
                 open_google_search(keyword)
                 time.sleep(BROWSER_DELAY)
 
             if maps_found:
-                print("📍 Opening Google Maps")
+                print(" Opening Google Maps")
                 open_google_maps(keyword)
                 time.sleep(BROWSER_DELAY)
 
@@ -505,7 +505,7 @@ def main():
         time.sleep(RATE_LIMIT_DELAY)
 
     wb.save(INPUT_FILE)
-    print("✅ Rankings + Agent Reasoning written into SAME file")
+    print(" Rankings + Agent Reasoning written into SAME file")
 
 if __name__ == "__main__": 
     main()
